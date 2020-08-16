@@ -30,4 +30,4 @@
 
 14. По умолчанию, команды на удаленном компьютере с помощью ssh, TTY не выделяется для удаленного сеанса. 
 
-15. screen -S screen name или  reptyr PID of running process to attach
+15. screen -S screen name или  reptyr PID of running process to attach.
