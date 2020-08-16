@@ -31,24 +31,36 @@ for result in result_os.split('\n'):
         print(prepare_result)
 ``` 
 
-4. 
+4. Собственно вторая часть этого задания "очень странная", 1й цикл у меня проверяет доступность "сайтов" выводит результат в консоль, записывает его в файл, также создает массив real_ip для дальнейшего сравнения. Цикл while у меня сравнивает то, что попало в файл и real_ip, но так как работае скрипта идет последовательно (и это 1 скрипт), ip адреса в файле и массиве всегда будут одинаковые т к идет перезапись файла до проверки файла и массива... 
 ```
 #!/usr/bin/env python3
 
 import os
-old_ip = []
+real_ip = []
 bash_command = ['ping -c 1 drive.google.com', 'ping -c 1 mail.google.com', 'ping -c 1 google.com']
 result_os = os.popen(' && '.join(bash_command)).read()
-#count = 0
+f = open('old_ip.txt', 'w')
 for result in result_os.split('\n'):
-      if result.find('PING') != -1:
+    if result.find('PING') != -1:
           prepare_result = result.replace('PING ', '<')
           prepare_result = prepare_result.replace('56(84) bytes of data.', '')
           prepare_result = prepare_result.replace(' (', '> - <')
           prepare_result = prepare_result.replace(')', '>')
           print(prepare_result)
 
-#          old_ip.append(prepare_result)
+#          real_ip.append(prepare_result)
+          f.write(prepare_result + '\n')
+
+f.close()
+f = open('old_ip.txt').read().split('\n')
+
+#print(f)
+#print(real_ip)
+count = 0
+while (count < len(real_ip)):
+    if f[count] == real_ip[count]:
+        print('[ERROR] ' +  real_ip[count] + 'IP mismatch')
+    count += 1
 
 # Сначала не понял условие, поэтому написал это...Проверка доступности сайта по ping
 #print('Хотите проверить сервис?')
