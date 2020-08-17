@@ -54,11 +54,9 @@ for result in result_os.split('\n'):
 f.close()
 f = open('old_ip.txt').read().split('\n')
 
-#print(f)
-#print(real_ip)
 count = 0
 while (count < len(real_ip)):
-    if f[count] == real_ip[count]:
+    if str(f[count]) != str(real_ip[count]):
         print('[ERROR] ' +  real_ip[count] + 'IP mismatch')
     count += 1
 
