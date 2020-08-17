@@ -31,34 +31,47 @@ for result in result_os.split('\n'):
         print(prepare_result)
 ``` 
 
-4. Собственно вторая часть этого задания "очень странная", 1й цикл у меня проверяет доступность "сайтов" выводит результат в консоль, записывает его в файл, также создает массив real_ip для дальнейшего сравнения. Цикл while у меня сравнивает то, что попало в файл и real_ip, но так как работае скрипта идет последовательно (и это 1 скрипт), ip адреса в файле и массиве всегда будут одинаковые т к идет перезапись файла до проверки файла и массива... 
+4. Конструкция "рубанок", очевидно, что можно было бы обойтись 1 циклом for для "сбора" строк при использовании функции, но до функцией не дошле... Поэтому получилось так, первый цикл for собирает  форматированную по условию строку и записывает результат в файл. Второй цикл for делает аналогичную операцию и записывает данные в массив (с новым вызовом ping). Цикл while уже сравнивает значения которые были записаны в файл (будем считат ьих старыми данными) с данными в массиве real_ip(новые данные). Если потыкать N раз скрипт в консоли, иногда удается получить разные ip и соответствующую запись об этом благодаря while. 
+
 ```
 #!/usr/bin/env python3
 
 import os
-real_ip = []
+import time
 bash_command = ['ping -c 1 drive.google.com', 'ping -c 1 mail.google.com', 'ping -c 1 google.com']
-result_os = os.popen(' && '.join(bash_command)).read()
+result_old = os.popen(' && '.join(bash_command)).read()
 f = open('old_ip.txt', 'w')
-for result in result_os.split('\n'):
+for result in result_old.split('\n'):
     if result.find('PING') != -1:
           prepare_result = result.replace('PING ', '<')
           prepare_result = prepare_result.replace('56(84) bytes of data.', '')
           prepare_result = prepare_result.replace(' (', '> - <')
           prepare_result = prepare_result.replace(')', '>')
-          print(prepare_result)
-
-          real_ip.append(prepare_result)
           f.write(prepare_result + '\n')
 
 f.close()
 f = open('old_ip.txt').read().split('\n')
 
+#time.sleep(3)
+
+result_new  = os.popen(' && '.join(bash_command)).read()
+real_ip = []
+for result in result_new.split('\n'):
+    if result.find('PING') != -1:
+        prepare_result = result.replace('PING ', '<')
+        prepare_result = prepare_result.replace('56(84) bytes of data.', '')
+        prepare_result = prepare_result.replace(' (', '> - <')
+        prepare_result = prepare_result.replace(')', '>')
+        print(prepare_result)
+        real_ip.append(prepare_result)
+
 count = 0
 while (count < len(real_ip)):
-    if str(f[count]) != str(real_ip[count]):
-        print('[ERROR] ' +  real_ip[count] + 'IP mismatch')
-    count += 1
+        if str(f[count]) != str(real_ip[count]):
+            arry_new_name_ip = real_ip[count].split(' ')
+            arry_old_name_ip = f[count].split(' ')
+            print('[ERROR] '  + arry_old_name_ip[0] + ' IP mismatch: старый ip - ' + arry_old_name_ip[2] + ', новый ip - ' +  arry_new_name_ip[2])
+        count += 1
 
 # Сначала не понял условие, поэтому написал это...Проверка доступности сайта по ping
 #print('Хотите проверить сервис?')
