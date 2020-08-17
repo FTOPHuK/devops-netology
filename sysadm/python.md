@@ -48,7 +48,7 @@ for result in result_os.split('\n'):
           prepare_result = prepare_result.replace(')', '>')
           print(prepare_result)
 
-#          real_ip.append(prepare_result)
+          real_ip.append(prepare_result)
           f.write(prepare_result + '\n')
 
 f.close()
