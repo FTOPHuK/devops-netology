@@ -21,14 +21,18 @@ for result in result_os.split('\n'):
 #!/usr/bin/env python3
 
 import os
+import sys
 
-enter_dir = input("Введите директорию: ")
-bash_command = ["cd " + enter_dir, "git status"]
-result_os = os.popen(' && '.join(bash_command)).read()
-for result in result_os.split('\n'):
-     if result.find('modified') != -1:
-        prepare_result = result.replace('\tmodified:   ', '')
-        print(prepare_result)
+try:
+    args = sys.argv[1]
+    bash_command = ['cd ' + args, "git status"]
+    result_os = os.popen(' && '.join(bash_command)).read()
+    for result in result_os.split('\n'):
+        if result.find('modified') != -1:
+            prepare_result = result.replace('\tmodified:   ', '')
+            print(prepare_result)
+except IndexError:
+    print("[ERROR] при вызове скрипта укажите путь с git")
 ``` 
 
 4. Конструкция "рубанок", очевидно, что можно было бы обойтись 1 циклом for для "сбора" строк при использовании функции, но до функций не дошел... Поэтому получилось так, но зато работает и условия в дз соблюдены полностью. Первый цикл for собирает  форматированную по условию строку и записывает результат в файл. Второй цикл for делает аналогичную операцию и записывает данные в массив (с новым вызовом ping, чобы была возможность получить другой ip). Цикл while уже сравнивает значения которые были записаны в файл (будем считать их старыми данными) с данными в массиве real_ip(новые данные). Если потыкать N раз скрипт в консоле, иногда удается получить разные ip и соответствующую запись об этом благодаря while. 
