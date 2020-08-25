@@ -18,20 +18,19 @@
 2. 
 ```
 import socket
-bash_command = ['google.com', 'mail.google.com', 'drive.google.com', 'yandex.ru']
+service = ['google.com', 'mail.google.com', 'drive.google.com', 'yandex.ru']
 with open('D:\\j.json', 'w') as j:
-	   
-      for result in bash_command:
-            if bash_command.index(result) == 0:
+      for result in service:
+            if service.index(result) == 0:
                   j.write('{\n\t\"' + result + '\": \"' + socket.gethostbyname(result) + '\",\n')
-            elif result == bash_command[-1]:
+            elif result == service[-1]:
                   j.write('\t\"' + result + '\": \"' + socket.gethostbyname(result) + '\"\n}')
             else:
                   j.write('\t\"' + result + '\": \"' + socket.gethostbyname(result) + '\",\n')
 
 with open('D:\\y.yaml', 'w') as y:
       y.write('---\n')
-      for result in bash_command:
+      for result in service:
             y.write('- ' + result + ': \'' + socket.gethostbyname(result) + '\'\n')
       y.write('...')
 ```
