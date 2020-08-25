@@ -3,7 +3,7 @@
 1. 
 ```
 { "info": "Sample JSON output from our service\t",
-    "elements":[
+    "elements": [
         { "name": "first",
         "type": "server",
         "ip": 7175
