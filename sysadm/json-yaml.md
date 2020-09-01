@@ -34,3 +34,26 @@ with open('D:\\y.yaml', 'w') as y:
             y.write('- ' + result + ': \'' + socket.gethostbyname(result) + '\'\n')
       y.write('...')
 ```
+
+Через json.dump() и yaml.dump():
+```
+import json
+import yaml
+import socket
+
+service = ['google.com', 'mail.google.com', 'drive.google.com', 'yandex.ru']
+service_json = {}
+service_yaml = []
+with open('D:\\j2.json', 'w') as j:
+      for result in service:
+           service_json[result] = socket.gethostbyname(result)
+      j.write(json.dumps(service_json))
+
+with open('D:\\y2.yaml', 'w') as y:
+      for result in service:
+           temp = {result: str(socket.gethostbyname(result))}
+           service_yaml.append(temp)
+      y.write(yaml.dump(service_yaml, explicit_start=True, explicit_end=True))
+	  
+
+```
