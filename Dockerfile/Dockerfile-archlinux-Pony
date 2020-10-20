@@ -1,0 +1,10 @@
+FROM archlinux:latest
+
+RUN pacman-key --init && pacman-key --populate archlinux
+ENV LANG=en_US.UTF-8
+
+CMD ["/usr/bin/bash"]
+RUN pacman -Sy && pacman -S --noconfirm community/ponysay
+
+ENTRYPOINT ["/usr/bin/ponysay"]
+CMD ["Hey, netology" ]

@@ -1,0 +1,12 @@
+FROM ubuntu:latest
+CMD ["/bin/sh"]
+RUN  update &&\
+      apt-get install -y wget gnupg gnupg1 gnupg2 openjdk-8-jdk curl initscripts
+RUN wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | apt-key add -
+ENV ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
+RUN echo deb https://pkg.jenkins.io/debian-stable binary/ >> /etc/apt/sources.list
+RUN apt-get update &&\
+       apt-get install -y jenkins
+EXPOSE 8080
+ENTRYPOINT ["tail"]
+CMD ["-f", "/dev/null"]

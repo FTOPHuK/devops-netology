@@ -1,0 +1,12 @@
+FROM node:latest
+
+COPY nodejs-demo /nodejs-demo 
+RUN cd /nodejs-demo && \
+	npm install
+
+WORKDIR nodejs-demo/
+
+ENTRYPOINT ["npm"]
+CMD ["start"]
+
+
