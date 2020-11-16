@@ -11,9 +11,9 @@ output "caller_user" {
 }
 
 output "instance_ip_addr" {
-  value = aws_instance.web.private_ip
+  value = local.web_instance_count_map[terraform.workspace]
 }
 
 output "network_id" {
-  value = aws_instance.web.network_interface_id
+  value = local.web_instance_count_map[terraform.workspace]
 }
