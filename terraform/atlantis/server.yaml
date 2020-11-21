@@ -1,0 +1,18 @@
+repos:
+  - id: /.*/
+    allowed_overrides: [apply_requirements]
+
+  - id: github.com/FTOPHuK/terraform
+    workflows:
+      custom:
+        plan:
+          steps:
+            - run:
+            - init
+            - plan:
+                extra_args: ["-lock", "false"]
+            - run:
+        apply:
+          steps:
+            - run: echo hi
+            - apply

@@ -1,0 +1,38 @@
+version: 3
+projects:
+- dir: live/stag
+  workflow: stag
+- dir: live/prod
+  workflow: prod
+workflows:
+  stag:
+    plan:
+      steps:
+      - plan:
+          extra_args: ["-var-file", "stag.tfvars"]
+      - env:
+          name: TERRAGRUNT_TFPATH
+          command: 'echo "terraform${ATLANTIS_TERRAFORM_VERSION}"'
+      - run: terragrunt plan -no-color -out $PLANFILE
+    apply:
+      steps:
+      - env:
+          name: TERRAGRUNT_TFPATH
+          command: 'echo "terraform${ATLANTIS_TERRAFORM_VERSION}"'
+      - run: terragrunt apply -no-color $PLANFILE
+  prod:
+    plan:
+      steps:
+      - plan:
+          extra_args: ["-var-file", "prod.tfvars"]
+        - env:
+            name: TERRAGRUNT_TFPATH
+            command: 'echo "terraform${ATLANTIS_TERRAFORM_VERSION}"'
+        - run: terragrunt plan -no-color -out $PLANFILE
+    apply:
+      steps:
+        - env:
+            name: TERRAGRUNT_TFPATH
+            command: 'echo "terraform${ATLANTIS_TERRAFORM_VERSION}"'
+        - run: terragrunt apply -no-color $PLANFILE
+
